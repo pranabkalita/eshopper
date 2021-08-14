@@ -24,8 +24,8 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->string('tags');
             $table->integer('price');
-            $table->boolean('isPublished')->default(true);
-            $table->boolean('isPromoted')->default(false);
+            $table->boolean('isPublished')->default(true)->index();
+            $table->boolean('isPromoted')->default(false)->index();
             $table->timestamps();
             $table->softDeletes();
 

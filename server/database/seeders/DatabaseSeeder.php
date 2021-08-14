@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             ImageSeeder::class,
             ReviewSeeder::class,
             OrderSeeder::class,
-            OrderDetailSeeder::class
+            OrderDetailSeeder::class,
+            OrderStatusSeeder::class,
         ]);
     }
 }

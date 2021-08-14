@@ -24,7 +24,7 @@ class CreateAddressesTable extends Migration
             $table->string('country');
             $table->string('phone');
             $table->string('alternate_phone');
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(false)->index();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

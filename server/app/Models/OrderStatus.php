@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class OrderStatus extends Model
 {
     use HasFactory;
 
     // RELATIONSHIP
 
-    public function orderStatuses()
+    public function order()
     {
-        return $this->hasMany(OrderStatus::class);
+        return $this->belongsTo(Order::class);
     }
 }

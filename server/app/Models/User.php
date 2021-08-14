@@ -45,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public static const ROLES = [
+    public const ROLES = [
         'SUPER_ADMIN' => 'Super Admin',
         'ADMIN' => 'Admin',
         'SELLER' => 'Seller',

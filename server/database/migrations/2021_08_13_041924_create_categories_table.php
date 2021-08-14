@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique()->index();
+            $table->boolean('isPublished')->default(false)->index();
             $table->timestamps();
         });
     }
