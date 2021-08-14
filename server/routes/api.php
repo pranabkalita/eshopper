@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Image;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$roles = User::ROLES;
+
 // SFORTIFY: User Sanctum as Auth Middleware for APIs
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
+        Route::get('/users', function () {
+            return User::all();
+        });
+    });
+
+    Route::group(['middleware' => ["role:{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
+        Route::get('/images', function () {
+            return Image::all();
+        });
+    });
 });
