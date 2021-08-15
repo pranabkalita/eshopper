@@ -2,13 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'isPublished'
+    ];
 
     public function getRouteKeyName()
     {
@@ -18,6 +25,10 @@ class Category extends Model
     public static function booted()
     {
         static::creating(function($model) {
+            $model->slug = Str::slug($model->name);
+        });
+
+        static::updating(function($model) {
             $model->slug = Str::slug($model->name);
         });
     }

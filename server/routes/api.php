@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Categories\CategoryController;
+use App\Http\Controllers\Users\UserController;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,13 +30,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
     Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
 
         Route::apiResource('/users', UserController::class);
+        Route::apiResource('/categories', CategoryController::class);
 
     });
 
     Route::group(['middleware' => ["role:{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
 
-        Route::apiResource('/categories', UserController::class);
-        Route::apiResource('/brands', UserController::class);
+        Route::apiResource('/categories', CategoryController::class)->only('index', 'store');
+        Route::apiResource('/brands', UserController::class)->only('index', 'store');
 
     });
 

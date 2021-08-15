@@ -22,6 +22,10 @@ class Product extends Model
             $model->sku = Str::uuid();
             $model->slug = Str::slug($model->name);
         });
+
+        static::updating(function($model) {
+            $model->slug = Str::slug($model->name);
+        });
     }
 
     // MUTATORS

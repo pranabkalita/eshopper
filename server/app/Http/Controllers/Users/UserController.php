@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Users;
 
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -36,6 +36,7 @@ class UserController extends Controller
             +
             ['password' => User::DEFAULT_USER_PASSWORD]
         );
+        $user->assignRole($request->role ? $request->role : User::ROLES['USER']);
 
         // Can send email to the user also
 

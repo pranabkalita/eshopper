@@ -14,6 +14,10 @@ class Stock extends Model
         static::creating(function($model) {
             $model->total = $model->quantity * $model->price;
         });
+
+        static::updating(function($model) {
+            $model->total = $model->quantity * $model->price;
+        });
     }
 
     // RELATIONSHIPS
