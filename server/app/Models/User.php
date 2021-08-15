@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -52,10 +54,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'USER' => 'User'
     ];
 
+    public const DEFAULT_USER_PASSWORD = 'password';
+    public const AVATAR_PATH = '/images/avatars/';
+
     public static function booted()
     {
         static::creating(function($model) {
             $model->avatar = asset('/images/avatars/dummy-profile.svg');
+            $model->password = Hash::make($model->password);
         });
     }
 
@@ -74,5 +80,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    // METHODS
+
+    public function generateAvatarName($avatar)
+    {
+        return $this->first_name . '-' . Str::random(10) . '-' . now() . '.' . $avatar->getClientOriginalExtension();
     }
 }
