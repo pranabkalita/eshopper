@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Brands\BrandController;
 use App\Http\Controllers\Categories\CategoryController;
+use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Users\UserController;
 use App\Models\Image;
 use App\Models\User;
@@ -24,6 +25,7 @@ $roles = User::ROLES;
 // Public APIs
 Route::apiResource('/categories', BrandController::class)->only('index', 'show');
 Route::apiResource('/brands', BrandController::class)->only('index', 'show');
+Route::apiResource('/products', ProductController::class)->only('index', 'show');
 
 
 // SFORTIFY: User Sanctum as Auth Middleware for APIs
@@ -50,7 +52,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
 
     Route::group(['middleware' => ["role:{$roles['SELLER']}|{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
 
-        Route::apiResource('/products', UserController::class);
+        Route::apiResource('/products', ProductController::class)->only('store', 'update', 'destroy');
         Route::apiResource('/stocks', UserController::class);
         Route::apiResource('/images', UserController::class);
 

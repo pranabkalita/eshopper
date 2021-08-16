@@ -12,9 +12,18 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
+    public const IMAGE_PATH = '/images/products/';
+
     public function getRouteKeyName()
     {
-        return 'name';
+        return 'slug';
     }
 
     public static function booted() {
@@ -39,6 +48,19 @@ class Product extends Model
         $this->attributes['slug'] = $slug;
     }
 
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = $value * 100;
+    }
+
+    // Accessors
+
+    public function getPriceAttribute($value)
+    {
+        return $value / 100;
+    }
+
+
     // SCOPES
 
     public function scopeIsLive(Builder $query)
@@ -59,6 +81,11 @@ class Product extends Model
         }
 
         return $slug;
+    }
+
+    public static function generateImageName($image)
+    {
+        return Str::random(10) . '-' . now()->timestamp . '.' . $image->getClientOriginalExtension();
     }
 
     // RELATIONSHIPS

@@ -22,7 +22,6 @@ class CreateProductsTable extends Migration
             $table->string('name')->index();
             $table->string('slug')->unique()->index();
             $table->text('description');
-            $table->string('tags');
             $table->integer('price');
             $table->boolean('isPublished')->default(true)->index();
             $table->boolean('isPromoted')->default(false)->index();
