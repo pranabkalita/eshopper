@@ -10,6 +10,12 @@ class Brand extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'isPublished'
+    ];
+
     public function getRouteKeyName()
     {
         return 'slug';

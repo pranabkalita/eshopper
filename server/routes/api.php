@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Brands\BrandController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Users\UserController;
 use App\Models\Image;
@@ -20,6 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 $roles = User::ROLES;
 
+// Public APIs
+Route::apiResource('/categories', BrandController::class)->only('index', 'show');
+Route::apiResource('/brands', BrandController::class)->only('index', 'show');
+
+
 // SFORTIFY: User Sanctum as Auth Middleware for APIs
 Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
 
@@ -30,14 +36,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
     Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
 
         Route::apiResource('/users', UserController::class);
-        Route::apiResource('/categories', CategoryController::class);
+        Route::apiResource('/categories', CategoryController::class)->only('store', 'update', 'destroy');
+        Route::apiResource('/brands', BrandController::class)->only('store', 'update', 'destroy');
 
     });
 
     Route::group(['middleware' => ["role:{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
 
-        Route::apiResource('/categories', CategoryController::class)->only('index', 'store');
-        Route::apiResource('/brands', UserController::class)->only('index', 'store');
+        Route::apiResource('/categories', CategoryController::class)->only('store');
+        Route::apiResource('/brands', BrandController::class)->only('store');
 
     });
 

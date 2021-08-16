@@ -13,27 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return CategoryResource::collection(Category::get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(CreateCategoryRequest $request)
     {
         $data = [
             'name' => $request->name,
-            'isPublished' => auth()->user()->hasRole(User::ROLES['SUPER_ADMIN']) ? true : false
+            'isPublished' => auth()->user()->hasRole(User::ROLES['SUPER_ADMIN']) ? ($request->has('isPublished') ? $request->isPublished : true) : false
         ];
 
         $category = Category::create($data);
@@ -41,24 +30,11 @@ class CategoryController extends Controller
         return (new CategoryResource($category))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Category $category)
     {
         return (new CategoryResource($category))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $data = $request->only('name');
@@ -69,12 +45,6 @@ class CategoryController extends Controller
         return (new CategoryResource($category))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Category $category)
     {
         $category->delete();
