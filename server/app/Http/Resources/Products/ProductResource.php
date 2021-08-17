@@ -4,6 +4,7 @@ namespace App\Http\Resources\Products;
 
 use App\Http\Resources\Brands\BrandResource;
 use App\Http\Resources\Categoties\CategoryResource;
+use App\Http\Resources\Stocks\StockResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 

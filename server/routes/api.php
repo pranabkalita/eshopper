@@ -3,6 +3,7 @@
 use App\Http\Controllers\Brands\BrandController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Stocks\StockController;
 use App\Http\Controllers\Users\UserController;
 use App\Models\Image;
 use App\Models\User;
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
 
     });
 
-    Route::group(['middleware' => ["role:{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
+    Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
 
         Route::apiResource('/categories', CategoryController::class)->only('store');
         Route::apiResource('/brands', BrandController::class)->only('store');
@@ -52,9 +53,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
 
     Route::group(['middleware' => ["role:{$roles['SELLER']}|{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
 
-        Route::apiResource('/products', ProductController::class)->only('store', 'update', 'destroy');
-        Route::apiResource('/stocks', UserController::class);
+        Route::apiResource('/products', ProductController::class);
         Route::apiResource('/images', UserController::class);
+        Route::apiResource('/stocks', StockController::class);
 
     });
 

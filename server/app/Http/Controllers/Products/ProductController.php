@@ -20,23 +20,6 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    private function uploadFiles($request, Product $product)
-    {
-        $imagePaths = [];
-
-        if ($request->has('images') && count($request->file('images')) > 0) {
-            foreach($request->file('images') as $image) {
-                $filename = Product::generateImageName($image);
-                $image->move(public_path(Product::IMAGE_PATH), $filename);
-                $path = Product::IMAGE_PATH . $filename;
-
-                array_push($imagePaths, ['path' => $path, 'product_id' => $product->id]);
-            }
-        }
-
-        return $imagePaths;
-    }
-
     public function store(CreateProductRequest $request)
     {
 
@@ -110,5 +93,22 @@ class ProductController extends Controller
         $product->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function uploadFiles($request, Product $product)
+    {
+        $imagePaths = [];
+
+        if ($request->has('images') && count($request->file('images')) > 0) {
+            foreach($request->file('images') as $image) {
+                $filename = Product::generateImageName($image);
+                $image->move(public_path(Product::IMAGE_PATH), $filename);
+                $path = Product::IMAGE_PATH . $filename;
+
+                array_push($imagePaths, ['path' => $path, 'product_id' => $product->id]);
+            }
+        }
+
+        return $imagePaths;
     }
 }

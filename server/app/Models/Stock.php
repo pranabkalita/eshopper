@@ -9,6 +9,11 @@ class Stock extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'created_at',
+        'updated_at'
+    ];
+
     public static function booted()
     {
         static::creating(function($model) {
@@ -25,5 +30,29 @@ class Stock extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    // MUTATOR
+
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = $value * 100;
+    }
+
+    public function setTotalAttribute($value)
+    {
+        $this->attributes['total'] = $value * 100;
+    }
+
+    // ACCESSORS
+
+    public function getPriceAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getTotalAttribute($value)
+    {
+        return $value / 100;
     }
 }
