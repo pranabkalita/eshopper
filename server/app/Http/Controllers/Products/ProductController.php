@@ -64,7 +64,7 @@ class ProductController extends Controller
 
         ];
 
-        if (auth()->user()->hasRole(User::ROLES['SUPER_ADMIN'])) {
+        if (auth()->user()->hasRole([User::ROLES['SUPER_ADMIN'], User::ROLES['ADMIN']])) {
             $data['user_id'] = $request->user_id;
             $product->update($data);
         } else {

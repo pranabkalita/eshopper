@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Products;
+namespace App\Http\Requests\Addresses;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductRequest extends FormRequest
+class UpdateAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +25,19 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         $validators = [
-            'category_id' => 'nullable|numeric',
-            'brand_id' => 'nullable|numeric',
-            'name' => 'nullable|string|min:3',
-            'description' => 'nullable|min:25',
-            'price' => 'nullable|numeric',
-            'isPublished' => 'nullable|boolean',
-            'isPromoted' => 'nullable|boolean',
-            'images' => 'nullable|array'
+            'address_line_1' => 'nullable|string',
+            'address_line_2' => 'nullable|string',
+            'city' => 'nullable|string',
+            'state' => 'nullable|string',
+            'zip' => 'nullable|numeric',
+            'country' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'alternate_phone' => 'nullable|string',
+            'is_active' => 'nullable|boolean',
         ];
 
         if (auth()->user()->hasRole([User::ROLES['SUPER_ADMIN'], User::ROLES['ADMIN']])) {
-            $validators['user_id'] = 'required|numeric';
+            $validators['user_id'] = 'nullable|numeric';
         }
 
         return $validators;

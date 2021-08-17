@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Addresses\AddressController;
 use App\Http\Controllers\Brands\BrandController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Products\ProductController;
@@ -39,15 +40,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
     Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
 
         Route::apiResource('/users', UserController::class);
-        Route::apiResource('/categories', CategoryController::class)->only('store', 'update', 'destroy');
-        Route::apiResource('/brands', BrandController::class)->only('store', 'update', 'destroy');
+        Route::apiResource('/categories', CategoryController::class);
+        Route::apiResource('/brands', BrandController::class);
 
     });
 
-    Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
+    Route::group(['middleware' => ["role:{$roles['ADMIN']}"]], function () {
 
-        Route::apiResource('/categories', CategoryController::class)->only('store');
-        Route::apiResource('/brands', BrandController::class)->only('store');
+        Route::apiResource('/categories', CategoryController::class)->only('index', 'store');
+        Route::apiResource('/brands', BrandController::class)->only('index', 'store');
 
     });
 
@@ -59,10 +60,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
 
     });
 
+    Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}|{$roles['ADMIN']}|{$roles['USER']}"]], function () {
+
+        Route::apiResource('/addresses', AddressController::class);
+
+    });
+
     Route::group(['middleware' => ["role:{$roles['USER']}"]], function () {
 
         Route::apiResource('/orders', UserController::class);
-        Route::apiResource('/addresses', UserController::class);
         Route::apiResource('/reviews', UserController::class);
 
     });
