@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\OrdersStatuses;
+namespace App\Http\Resources\OrderStatuses;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,9 +14,6 @@ class OrderStatusResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'status' => $this->status,
-            'created_at' => $this->created_at
-        ];
+        return parent::toArray($request);
     }
 }

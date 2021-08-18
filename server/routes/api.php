@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Stocks\StockController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\OrderStatuses\OrderStatusController;
 use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,46 +34,6 @@ Route::apiResource('/products', ProductController::class)->only('index', 'show')
 
 // SFORTIFY: User Sanctum as Auth Middleware for APIs
 Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
-
-    // Route::get('/user', function (Request $request) {
-    //     return $request->user();
-    // });
-
-    // Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}"]], function () {
-
-    //     Route::apiResource('/users', UserController::class);
-    //     Route::apiResource('/categories', CategoryController::class);
-    //     Route::apiResource('/brands', BrandController::class);
-
-    // });
-
-    // Route::group(['middleware' => ["role:{$roles['ADMIN']}"]], function () {
-
-    //     Route::apiResource('/categories', CategoryController::class)->only('index', 'store');
-    //     Route::apiResource('/brands', BrandController::class)->only('index', 'store');
-
-    // });
-
-    // Route::group(['middleware' => ["role:{$roles['SELLER']}|{$roles['ADMIN']}|{$roles['SUPER_ADMIN']}"]], function () {
-
-    //     Route::apiResource('/products', ProductController::class);
-    //     Route::apiResource('/images', UserController::class);
-    //     Route::apiResource('/stocks', StockController::class);
-
-    // });
-
-    // Route::group(['middleware' => ["role:{$roles['SUPER_ADMIN']}|{$roles['ADMIN']}|{$roles['USER']}"]], function () {
-
-    //     Route::apiResource('/addresses', AddressController::class);
-
-    // });
-
-    // Route::group(['middleware' => ["role:{$roles['USER']}"]], function () {
-
-    //     Route::apiResource('/orders', OrderController::class);
-    //     Route::apiResource('/reviews', UserController::class);
-
-    // });
 
     Route::get('/users', [UserController::class, 'index'])->middleware('role:Super Admin|Admin');
     Route::post('/users', [UserController::class, 'store'])->middleware('role:Super Admin');
@@ -110,9 +71,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () use ($roles) {
     Route::put('/addresses/{address}', [AddressController::class, 'update'])->middleware('role:User');
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->middleware('role:User');
 
-    Route::get('/orders', [OrderController::class, 'index'])->middleware('role:Super Admin|Admin|User');
+    Route::get('/orders', [OrderController::class, 'index'])->middleware('role:Super Admin|Admin|User|Seller');
     Route::post('/orders', [OrderController::class, 'store'])->middleware('role:User');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('role:User');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('role:Super Admin|Admin|User|Seller');
+
+    Route::post('/order-statuses', [OrderStatusController::class, 'store'])->middleware('role:Super Admin|Admin|Seller');
 
 
     // User CRUD (Super Admin Only)
