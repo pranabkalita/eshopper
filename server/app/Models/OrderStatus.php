@@ -9,6 +9,10 @@ class OrderStatus extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'status'
+    ];
+
     // RELATIONSHIP
 
     public function order()

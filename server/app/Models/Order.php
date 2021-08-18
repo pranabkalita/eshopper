@@ -9,10 +9,28 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
     // RELATIONSHIP
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
 
     public function orderStatuses()
     {
         return $this->hasMany(OrderStatus::class);
     }
+
+    // SCOPE
 }
